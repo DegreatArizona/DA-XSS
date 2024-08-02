@@ -100,6 +100,12 @@ termcolor
 
 Ensure your script is saved with this name.
 
+## Buy Me A Coffee
+**Network: Bitcoin**
+```
+143E54wEKY11g3D7G2czfrJebf19t5S9CJ
+```
+
 ### `LICENSE`
 
 ```markdown
