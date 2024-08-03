@@ -9,6 +9,7 @@ DA-XSS/
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
+├── xss-payload-list.txt
 ├── xss.py
 ```
 
@@ -69,7 +70,7 @@ python xss.py <url> <params> [--cookies "key=value;key2=value2"]
 - `<url>`: The target URL to scan.
 - `<params>`: A list of parameters to test for XSS vulnerabilities (e.g., `param1 param2`).
 - `--cookies`: Optional. Cookies to include in the request (format: `key=value;key2=value2`).
-
+- `--payload-file`: Specify the payload file to use
 ### Examples
 
 ```sh
@@ -77,7 +78,7 @@ python xss.py "http://example.com/search" "q"
 ```
 
 ```sh
-python xss.py "http://example.com/search" "q" --cookies "sessionid=abcd1234"
+python xss.py "http://example.com/search" "q" --cookies "sessionid=abcd1234" --payload-file "xss-payload-list.txt"
 ```
 
 ## Disclaimer
