@@ -80,7 +80,7 @@ if __name__ == "__main__":
     parser.add_argument("url", help="Target URL")
     parser.add_argument("params", nargs="+", help="Parameters to test (e.g., 'param1 param2')")
     parser.add_argument("--cookies", help="Cookies to include in the request (key=value;key2=value2)")
-    parser.add_argument("--payload-file", help="File containing XSS payloads")
+    parser.add_argument("--payload-file", help="File containing XSS payloads (xss-payload-list.txt)")
 
     args = parser.parse_args()
 
