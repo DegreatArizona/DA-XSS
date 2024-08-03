@@ -53,6 +53,7 @@ A simple Python script to scan for Cross-Site Scripting (XSS) vulnerabilities in
 git clone https://github.com/DegreatArizona/DA-XSS.git
 cd DA-XSS
 chmod +x xss.py
+./xss.py
 ```
 
 2. Install the required Python packages:
@@ -64,13 +65,13 @@ pip install -r requirements.txt
 ## Usage
 
 ```sh
-python xss.py <url> <params> [--cookies "key=value;key2=value2"]
+python xss.py <url> <params> [--cookies "key=value;key2=value2"] --payload-file xss-payload-list.txt
 ```
 
 - `<url>`: The target URL to scan.
 - `<params>`: A list of parameters to test for XSS vulnerabilities (e.g., `param1 param2`).
 - `--cookies`: Optional. Cookies to include in the request (format: `key=value;key2=value2`).
-- `--payload-file`: Specify the payload file to use
+- `--payload-file`: Specify the payload file to use (eg. xss-payload-list.txt)
 ### Examples
 
 ```sh
