@@ -2,12 +2,14 @@
 
 import requests
 import os
-from bs4 import BeautifulSoup
 import argparse
 from termcolor import colored
 
-os.system("clear")
-os.system("figlet DegreatArizona XSS")
+def print_banner():
+    os.system("clear")
+    os.system("figlet DegreatArizona XSS")
+
+print_banner()
 print()
 print(colored("Author   : DegreatArizona", 'green'))
 print(colored("Website  : https://degreatarizona.com", 'blue'))
@@ -19,7 +21,7 @@ print(colored("This tool is written for educational purposes only :)", 'yellow')
 print(colored("Degreatarizona is not responsible for misusing it.", 'yellow'))
 print()
 
-# Common XSS payloads
+# Default XSS payloads
 default_payloads = [
     "<script>alert('XSS')</script>",
     "'\"><script>alert('XSS')</script>",
@@ -56,7 +58,6 @@ def load_payloads_from_file(file_path):
 def scan_xss(url, params, payloads, cookies=None):
     for param in params:
         for payload in payloads:
-            # Create a copy of the parameters and inject the payload
             test_params = params.copy()
             test_params[param] = payload
             try:
@@ -80,7 +81,7 @@ if __name__ == "__main__":
     parser.add_argument("url", help="Target URL")
     parser.add_argument("params", nargs="+", help="Parameters to test (e.g., 'param1 param2')")
     parser.add_argument("--cookies", help="Cookies to include in the request (key=value;key2=value2)")
-    parser.add_argument("--payload-file", help="File containing XSS payloads (xss-payload-list.txt)")
+    parser.add_argument("--payload-file", help="File containing additional payloads")
 
     args = parser.parse_args()
 
@@ -93,7 +94,9 @@ if __name__ == "__main__":
 
     payloads = default_payloads
     if args.payload_file:
-        payloads = load_payloads_from_file(args.payload_file)
+        payloads += load_payloads_from_file(args.payload_file)
 
-    # Perform the scan
-    scan_xss(target_url, parameters, payloads, cookies)
+    try:
+        scan_xss(target_url, parameters, payloads, cookies)
+    except KeyboardInterrupt:
+        print(colored("\n[!] Scan interrupted by user.", 'red'))
